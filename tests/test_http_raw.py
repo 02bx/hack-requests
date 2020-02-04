@@ -109,3 +109,6 @@ Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
         r = self.hack.httpraw(raw, location=False)
         self.assertEqual(r.status_code, 301)
         self.assertTrue(r.text() == "")
+
+if __name__ == '__main__':
+    unittest.main()

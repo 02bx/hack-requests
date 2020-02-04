@@ -6,14 +6,14 @@
 
 import copy
 import gzip
-import queue
+import Queue
 import socket
 import ssl
 import threading
 import time
 import zlib
-from http import client
-from urllib import parse
+import httplib as client
+from six.moves.urllib import parse
 
 
 class HackError(Exception):
@@ -116,7 +116,7 @@ class hackRequests(object):
         else:
             self.httpcon = conpool
 
-    def _get_urlinfo(self, url, realhost: str):
+    def _get_urlinfo(self, url, realhost):
         p = parse.urlparse(url)
         scheme = p.scheme.lower()
         if scheme != "http" and scheme != "https":
@@ -144,7 +144,7 @@ class hackRequests(object):
 
         return _send_output_hook
 
-    def httpraw(self, raw: str, **kwargs):
+    def httpraw(self, raw, **kwargs):
         raw = raw.strip()
         proxy = kwargs.get("proxy", None)
         real_host = kwargs.get("real_host", None)
@@ -393,7 +393,10 @@ class response(object):
         except socket.timeout:
             body = b''
         if encode == 'gzip':
-            body = gzip.decompress(body)
+            #body = gzip.decompress(body)
+            from gzip import GzipFile
+            from StringIO import StringIO
+            body = GzipFile(fileobj=StringIO(body)).read()
         elif encode == 'deflate':
             try:
                 body = zlib.decompress(body, -zlib.MAX_WBITS)
@@ -451,7 +454,7 @@ class threadpool:
 
     def __init__(self, threadnum, callback, timeout=10):
         self.thread_count = self.thread_nums = threadnum
-        self.queue = queue.Queue()
+        self.queue = Queue.Queue()
         con = httpcon(timeout=timeout)
         self.hack = hackRequests(con)
         self.isContinue = True
@@ -491,7 +494,7 @@ class threadpool:
         func = self.hack.http
         self.queue.put({"func": func, "url": url, "kw": kwargs})
 
-    def httpraw(self, raw: str, ssl: bool = False, proxy=None, location=True):
+    def httpraw(self, raw, ssl = False, proxy=None, location=True):
         func = self.hack.httpraw
         self.queue.put({"func": func, "raw": raw, "ssl": ssl,
                         "proxy": proxy, "location": location})
@@ -524,7 +527,7 @@ def http(url, **kwargs):
     return hack.http(url, **kwargs)
 
 
-def httpraw(raw: str, **kwargs):
+def httpraw(raw, **kwargs):
     # con = httpcon(timeout=timeout)
     # hack = hackRequests(con)
     hack = hackRequests()

@@ -24,6 +24,7 @@ class TestCase(unittest.TestCase):
     def test_json(self):
         data = '{"hack-requests":"v1.0","author":"w8ay"}'
         r = self.hack.http("http://httpbin.org/post", post=data)
+        #print r.text()
         self.assertTrue("hack-requests" in r.text())
 
     def test_localhost(self):
@@ -33,3 +34,6 @@ class TestCase(unittest.TestCase):
         }
         r = self.hack.http("https://x.hacking8.com", headers=headers)
         print(r.text())
+
+if __name__ == '__main__':
+    unittest.main()

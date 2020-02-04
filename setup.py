@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 from setuptools import setup
-from HackRequests import (
-    __title__, __version__, __author__, __url__,
-    __author_email__, __license__)
+from HackRequests import __title__, __version__, __author__, __url__,__author_email__, __license__
 setup(
     name=__title__,
     version=__version__,

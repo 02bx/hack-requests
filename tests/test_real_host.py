@@ -30,3 +30,6 @@ user_login=admin&redirect_to=&wp-submit=Get+New+Password
         '''
         r = self.hack.httpraw(raw, real_host="httpbin.org")
         self.assertTrue("405" in r.text())
+
+if __name__ == '__main__':
+	unittest.main()

@@ -12,7 +12,7 @@ import HackRequests
 import random
 
 
-def chunk_data(data, keywords: list):
+def chunk_data(data, keywords):
     dl = len(data)
     ret = ""
     index = 0
