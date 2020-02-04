@@ -22,4 +22,7 @@ test:
 
 	pocs -s ./cms/thinkphp/thinkphp5_rce.py -iS http://192.168.218.145:8080/ 
 
-![example](./docs/example.png)
+![example](example.png)
+
+
+
